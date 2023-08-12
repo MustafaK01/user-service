@@ -1,5 +1,6 @@
 package com.mustafak01.userservice.dto.converter;
 
+import com.mustafak01.userservice.consts.Constants;
 import com.mustafak01.userservice.dto.UserDto;
 import com.mustafak01.userservice.model.HttpResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class HttpResponseConverter<T> {
     public HttpResponse convertToResponse(T t){
         String fieldName = (t instanceof UserDto) ? "user":"isVerified";
-        String message = (t instanceof UserDto) ? "User Created":"Account Verified";
+        String message = (t instanceof UserDto) ? Constants.USER_CREATED: Constants.ACCOUNT_VERIFIED;
         HttpStatus status = (t instanceof UserDto) ? HttpStatus.CREATED:HttpStatus.OK;
         return HttpResponse.builder()
                 .timeStamp(LocalDateTime.now().toString())

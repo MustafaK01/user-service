@@ -1,5 +1,6 @@
 package com.mustafak01.userservice.service.impl;
 
+import com.mustafak01.userservice.consts.Constants;
 import com.mustafak01.userservice.dto.UserDto;
 import com.mustafak01.userservice.dto.converter.UserDtoConverter;
 import com.mustafak01.userservice.model.Confirmation;
@@ -20,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto saveUser(UserDto userDto) {
-        if(this.userRepository.existsByEmail(userDto.getEmail())){throw new RuntimeException("Already Exists");}
+        if(this.userRepository.existsByEmail(userDto.getEmail())){throw new RuntimeException(Constants.ALREADY_EXISTS);}
         if(userDto!=null&&userDto.getName()!=null&&userDto.getEmail()!=null&&userDto.getPassword()!=null){
             User user = this.userDtoConverter.convertToEntity(userDto);
             this.userRepository.save(user);
@@ -31,13 +32,13 @@ public class UserServiceImpl implements UserService {
 
             return userDto;
         }
-        throw new RuntimeException("Missing fields");
+        throw new RuntimeException(Constants.MISSING_FIELDS);
 
     }
 
     @Override
     public Boolean verifyConfirmationKey(String confirmationKey) {
-        if(confirmationKey==null) throw new RuntimeException("Missing fields");
+        if(confirmationKey==null) throw new RuntimeException(Constants.MISSING_FIELDS);
         Confirmation confirmation = confirmationRepository.findByConfirmationKey(confirmationKey);
         User user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
         if(user!=null&&user.getEmail()!=null&&user.getPassword()!=null&&user.getName()!=null){
@@ -45,6 +46,6 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             return Boolean.TRUE;
         }
-        throw new RuntimeException("Missing Fields");
+        throw new RuntimeException(Constants.MISSING_FIELDS);
     }
 }
