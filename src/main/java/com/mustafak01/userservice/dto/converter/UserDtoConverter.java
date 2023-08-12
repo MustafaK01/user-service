@@ -17,7 +17,6 @@ public class UserDtoConverter {
 
     public User convertToEntity(UserDto userDto){
         return User.builder()
-                .id(0L)
                 .name(userDto.getName())
                 .email(userDto.getEmail())
                 .password(userDto.getPassword())
