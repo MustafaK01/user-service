@@ -2,10 +2,12 @@ package com.mustafak01.userservice.service.impl;
 
 import com.mustafak01.userservice.consts.Constants;
 import com.mustafak01.userservice.service.EmailService;
+import com.mustafak01.userservice.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,13 +21,14 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender emailSender;
 
     @Override
-    public void sendSimpleEmailMessage(String name, String to, String token) {
+    @Async
+    public void sendSimpleEmailMessage(String name, String to, String confirmationKey) {
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setSubject(Constants.NEW_USER_ACCOUNT_VERIFICATION);
             simpleMailMessage.setFrom(fromEmail);
             simpleMailMessage.setTo(to);
-            simpleMailMessage.setText("Test");
+            simpleMailMessage.setText(EmailUtils.getEmailMessage(name,host,confirmationKey));
             emailSender.send(simpleMailMessage);
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -34,7 +37,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendMimeMessageWithAttachments(String name, String to, String token) {
+    @Async
+    public void sendMimeMessageWithAttachments(String name, String to, String confirmationKey) {
         try {
 
         }catch (Exception e){
@@ -43,7 +47,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendMimeMessageWithEmbeddedImages(String name, String to, String token) {
+    @Async
+    public void sendMimeMessageWithEmbeddedImages(String name, String to, String confirmationKey) {
         try {
 
         }catch (Exception e){
@@ -52,7 +57,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendMimeMessageWithEmbeddedFiles(String name, String to, String token) {
+    @Async
+    public void sendMimeMessageWithEmbeddedFiles(String name, String to, String confirmationKey) {
         try {
 
         }catch (Exception e){
@@ -61,7 +67,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendHtmlEmail(String name, String to, String token) {
+    @Async
+    public void sendHtmlEmail(String name, String to, String confirmationKey) {
         try {
 
         }catch (Exception e){
@@ -70,7 +77,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendHtmlEmailWithEmbeddedFiles(String name, String to, String token) {
+    @Async
+    public void sendHtmlEmailWithEmbeddedFiles(String name, String to, String confirmationKey) {
         try {
 
         }catch (Exception e){

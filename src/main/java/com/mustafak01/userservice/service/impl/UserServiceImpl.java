@@ -7,6 +7,7 @@ import com.mustafak01.userservice.model.Confirmation;
 import com.mustafak01.userservice.model.User;
 import com.mustafak01.userservice.repository.ConfirmationRepository;
 import com.mustafak01.userservice.repository.UserRepository;
+import com.mustafak01.userservice.service.EmailService;
 import com.mustafak01.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final ConfirmationRepository confirmationRepository;
     private final UserDtoConverter userDtoConverter;
-
+    private final EmailService emailService;
     @Override
     public UserDto saveUser(UserDto userDto) {
         if(this.userRepository.existsByEmail(userDto.getEmail())){throw new RuntimeException(Constants.ALREADY_EXISTS);}
@@ -27,8 +28,7 @@ public class UserServiceImpl implements UserService {
             this.userRepository.save(user);
             Confirmation confirmation = new Confirmation(user);
             confirmationRepository.save(confirmation);
-
-            // TODO: 12.08.2023 Send email to user with token
+            emailService.sendSimpleEmailMessage(user.getName(),user.getEmail(),confirmation.getConfirmationKey());
 
             return userDto;
         }
