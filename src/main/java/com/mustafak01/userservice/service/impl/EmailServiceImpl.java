@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    @Value("${spring.mail.verify.host}")
+    @Value("${verify.host}")
     private String host;
     @Value("${spring.mail.username}")
     private String fromEmail;
